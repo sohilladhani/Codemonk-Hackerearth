@@ -21,13 +21,32 @@ Constraints:
 1 <= T <= 10
 1 <= N , Costi <= 10^6
 1 <= X <= 10^12
+
+Sample Input(Plaintext Link)
+1
+5 12
+1
+3
+4
+5
+2
+
+Sample Output(Plaintext Link)
+YES
+
+
+Explanation
+In the sample input, T is equal to 1. So, accordingly, in next line, values of N and X are given which are 5 and 12 respectively. 
+In the next 5 lines, you have costi asked by ith friend. As friends numbered from 2 to 4 (inclusively) have gifts value 
+which are {3, 4, 5}, and their sum equals to 12 - that is, the given value of X. So, the answer is YES.
+
 */
 #include <iostream>
 using namespace std;
 
 int main() {
-	int T, N, X;
-	int i, t;
+	long int N, X;
+	int T, i, t;
 	cin >> T;
 
 
@@ -37,10 +56,61 @@ int main() {
 
 	for(t=0; t<T; t++) {
 		cin >> N; cin >> X;
-		int arr[N];
+		int arr[N], temp, sum = 0, flag = 1, turn, flag2 = 1;
 
 		for(i=0; i<N; i++) {
 			cin >> arr[i];
+			if(arr[i] > X) {
+				flag2 = 0;
+			}
+			sum = sum + arr[i];
+		}
+		/*cout << "sum: " << sum << endl;*/
+		temp = X;
+		i = 0;
+		turn = 0;
+		if(sum < X) {
+			flag = 0;
+		} else {
+			while(temp!=0) {
+				if(!flag2) {
+					flag = 0;
+					break;
+				}
+				temp = temp - arr[i];
+				/*cout << "temp: " << temp << endl;*/
+				if(temp == 0) {
+					flag = 1;
+					break;
+				} else if(temp < 0) {
+					turn ++;
+					i = turn;
+					temp = X;
+					continue;
+				}
+				i++;
+				/*cout << "i: " << i << endl;*/
+				if(i == N) {
+					turn ++;
+					i = turn;
+					temp = X;
+					/*cout << "turn: " << turn << endl << "i: " << i << endl;*/
+					continue;
+				} else if(turn == N) {
+					flag = 0;
+				} else if (temp < 0) {
+					temp = X;
+					continue;
+				}
+			}
+		}
+
+		
+
+		if(flag == 0) {
+			cout << "NO" << endl;
+		} else {
+			cout << "YES" << endl;
 		}
 	}
 
